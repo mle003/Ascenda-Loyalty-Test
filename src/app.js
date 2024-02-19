@@ -24,6 +24,7 @@ app.get("/hotel_destination", async (req, res) => {
 	}
 });
 
+//update data from suppliers api
 app.get("/update-data", async (req, res) => {
 	try {
 		res.send(updatedHotelsData(req))
