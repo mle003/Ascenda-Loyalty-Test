@@ -10,4 +10,12 @@ This web server is divided into 2 different parts
 
 ## How to run
 
-### `npm start`
+### `npm start` server start at localhost:3000
+
+## Dev
+
+### `npm run dev`
+
+## Test
+
+### `jest`

@@ -1,9 +1,30 @@
-const axios = require("axios");
-const fs = require("fs");
+// Function to read hotels data from file
+async function readHotelsData(fs, dataFilePath) {
+    try {
+        await fs.promises.access(__dirname + dataFilePath, fs.constants.F_OK);
+        let hotelsData = await fs.promises.readFile(__dirname + dataFilePath, "utf-8");
+        return JSON.parse(hotelsData);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log('File does not exist');
+            return {};
+        } else {
+            throw new Error(`Error reading hotels data: ${error}`);
+        }
+    }
+}
 
-const hotelsDataFilePath = "/data/hotels.json";
+// Function to write hotels data to file
+async function writeHotelsData(fs, dataFilePath, data) {
+	try {
+		await fs.promises.writeFile(__dirname + dataFilePath, JSON.stringify(data, null, 2));
+	} catch (error) {
+		throw new Error(`Error writing hotels data: ${error}`);
+	}
+}
 
-const mergeHotelsData = (hotels, currentData) => {
+// Function to merge hotels data (replace with your actual implementation)
+function mergeHotelsData (hotels, currentData) {
     for (let hotel of hotels) {
         const id = (
             hotel.id ||
@@ -79,31 +100,59 @@ const mergeHotelsData = (hotels, currentData) => {
         }
 
         currentData[id]["images"] = (currentData[id]["images"] || {})
-        currentData[id]["images"]["room"] = (currentData[id]["images"]["room"] || [])
+        currentData[id]["images"]["room"] = (currentData[id]["images"]["room"] || {})
         const room_images = (
             hotel.images?.rooms ||
             []
         )
-        for (let image of room_images) {
-            currentData[id]["images"]["room"].push(image)
+        
+        for(let image of room_images) {
+            let description = (image.description || image.caption)
+            let url = (image.url || image.link)
+            if(!currentData[id]["images"]["room"][description]) {
+                currentData[id]["images"]["room"][description] = []
+            }
+            if(!currentData[id]["images"]["room"][description].includes(url)) {
+                currentData[id]["images"]["room"][description].push(url)
+            }
+            
         }
+        // for (let image of room_images) {
+        //     currentData[id]["images"]["room"].push(image)
+        // }
 
-        currentData[id]["images"]["site"] = (currentData[id]["images"]["site"] || [])
+        currentData[id]["images"]["site"] = (currentData[id]["images"]["site"] || {})
         const site_images = (
             hotel.images?.site ||
             []
         )
         for (let image of site_images) {
-            currentData[id]["images"]["site"].push(image)
+            let description = (image.description || image.caption)
+            let url = (image.url || image.link)
+            if(!currentData[id]["images"]["site"][description]) {
+                currentData[id]["images"]["site"][description] = []
+            }
+            if(!currentData[id]["images"]["site"][description].includes(url)) {
+                currentData[id]["images"]["site"][description].push(url)
+            }
+            // currentData[id]["images"]["site"].push(image)
         }
 
-        currentData[id]["images"]["amenities"] = (currentData[id]["images"]["amenities"] || [])
+        currentData[id]["images"]["amenities"] = (currentData[id]["images"]["amenities"] || {})
         const amenities_images = (
             hotel.images?.site ||
             []
         )
         for (let image of amenities_images) {
-            currentData[id]["images"]["amenities"].push(image)
+            let description = (image.description || image.caption)
+            let url = (image.url || image.link)
+            if(!currentData[id]["images"]["amenities"][description]) {
+                currentData[id]["images"]["amenities"][description] = []
+            }
+            if(!currentData[id]["images"]["amenities"][description].includes(url)) {
+                currentData[id]["images"]["amenities"][description].push(url)
+            }
+            // currentData[id]["images"]["amenities"].push(image)
         }
 
         currentData[id]["booking_condition"] = (currentData[id]["booking_condition"] || [])
@@ -121,62 +170,63 @@ const mergeHotelsData = (hotels, currentData) => {
     return currentData
 };
 
-const updatedHotelsData = async () => {
-    const currentHotelsData = require(__dirname + hotelsDataFilePath)
+// Function to fetch hotels data from suppliers
+async function fetchHotelsDataFromSuppliers(axios, suppliers) {
+	const hotelPromises = suppliers.map((url) => axios.get(url));
+	const hotelData = await Promise.all(hotelPromises);
 
-    const suppliersDataFilePath = "/data/suppliers.json"
-    const suppliers = require(__dirname + suppliersDataFilePath)
+	return hotelData.flatMap((data) => data.data);
+}
 
-    try {
-        const hotelPromises = suppliers.map((url) => axios.get(url));
-        const hotelData = await Promise.all(hotelPromises);
+// Function to update hotels data
+async function updatedHotelsData(dataFilePath, suppliersDataFilePath, fs, axios) {
+	const currentHotelsData = await readHotelsData(fs, dataFilePath);
+	const suppliers = require(__dirname + suppliersDataFilePath);
 
-        const allHotels = hotelData.flatMap((data) => data.data);
+	const allHotels = await fetchHotelsDataFromSuppliers(axios, suppliers);
+	const mergedData = mergeHotelsData(allHotels, currentHotelsData);
 
-        const merged = mergeHotelsData(allHotels, currentHotelsData);
+	await writeHotelsData(fs, dataFilePath,  mergedData);
+	console.log("Merged hotels data written to file:", dataFilePath);
 
-        await fs.promises.writeFile(__dirname + hotelsDataFilePath, JSON.stringify(merged, null, 2));
-        console.log("Merged hotels data written to file:", hotelsDataFilePath);
-        return "Update data successfully"
-    } catch (error) {
-        throw new Error("Error writing merged hotels data:", error);
-    }
+	return mergedData;
+}
+
+// Function to get all hotels data
+function getAllHotels(fs, dataFilePath) {
+	return readHotelsData(fs, dataFilePath);
+}
+
+// Function to get hotel by ID
+function getHotelById(hotelsData, req) {
+	const hotelId = req.query.id;
+	if (!hotelId) {
+		throw new Error("Missing hotel id");
+	}
+	if (!hotelsData[hotelId]) {
+		throw new Error("Hotel id is invalid");
+	}
+	return hotelsData[hotelId];
+}
+
+// Function to get hotel by destination ID
+function getHotelByDestinationId(hotelsData, req) {
+	const destinationId = req.query.id;
+	if (!destinationId) {
+		throw new Error("Missing destination Id");
+	}
+
+	for (const hotelId in hotelsData) {
+		if (hotelsData[hotelId]["destination_id"] == parseInt(destinationId)) {
+			return hotelsData[hotelId];
+		}
+	}
+	throw new Error("Destination Id is invalid");
+}
+
+module.exports = {
+	updatedHotelsData,
+	getAllHotels,
+	getHotelById,
+	getHotelByDestinationId,
 };
-
-const getAllHotels = () => {
-    const hotelsData = require(__dirname + hotelsDataFilePath)
-
-    return hotelsData
-}
-
-const getHotelById = (req) => {
-    const hotelId = req.query.id
-    if (!hotelId) {
-        throw new Error("Missing hotel id")
-    }
-    const hotelsData = getAllHotels()
-    if (hotelsData[hotelId]) {
-        return hotelsData[hotelId]
-    } else {
-        throw new Error("Hotel id is invalid")
-    }
-}
-
-const getHotelByDestinationId = (req) => {
-    const destinationId = req.query.id
-    if (!destinationId) {
-        throw new Error("Missing destination Id")
-    }
-    const hotelsData = getAllHotels()
-
-    for (const hotelId in hotelsData) {
-        if (hotelsData[hotelId]["destination_id"] == parseInt(destinationId)) {
-            return hotelsData[hotelId]
-        }
-    }
-    throw new Error("Destination Id is invalid")
-}
-
-
-
-module.exports = { updatedHotelsData, getHotelById, getHotelByDestinationId, mergeHotelsData }
