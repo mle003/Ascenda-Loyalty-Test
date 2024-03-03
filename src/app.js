@@ -1,6 +1,6 @@
 const express = require("express");
-const fs = require("fs"); // Import for file operations
-const axios = require("axios"); // Import for API calls
+const fs = require("fs");
+const axios = require("axios");
 const {
 	getHotelById,
 	getAllHotels,
@@ -14,11 +14,9 @@ const suppliersDataFilePath = "/data/suppliers.json";
 const app = express();
 const port = 3000;
 
-// Middleware to handle loading hotels data
 app.use(async (req, res, next) => {
 	try {
-		const hotelsData = await getAllHotels(fs, hotelsDataFilePath); // Get data using the injected dependency
-		req.hotelsData = hotelsData; // Attach data to request object
+		const hotelsData = await getAllHotels(fs, hotelsDataFilePath);
 		next();
 	} catch (error) {
 		console.error("Error loading hotels data:", error);
@@ -28,7 +26,7 @@ app.use(async (req, res, next) => {
 
 app.get("/hotel_id", (req, res) => {
 	try {
-		res.send(getHotelById(req.hotelsData, req)); // Pass hotelsData from middleware
+		res.send(getHotelById(req.hotelsData, req));
 	} catch (error) {
 		res.status(400).send({ message: error.message });
 	}
@@ -36,7 +34,7 @@ app.get("/hotel_id", (req, res) => {
 
 app.get("/hotel_destination", (req, res) => {
 	try {
-		res.send(getHotelByDestinationId(req.hotelsData, req)); // Pass hotelsData from middleware
+		res.send(getHotelByDestinationId(req.hotelsData, req));
 	} catch (error) {
 		res.status(400).send({ message: error.message });
 	}
@@ -44,7 +42,7 @@ app.get("/hotel_destination", (req, res) => {
 
 app.get("/update_data", async (req, res) => {
 	try {
-		await updatedHotelsData(hotelsDataFilePath, suppliersDataFilePath, fs, axios); // Provide dependencies
+		await updatedHotelsData(hotelsDataFilePath, suppliersDataFilePath, fs, axios);
 		res.send("Update data successfully");
 	} catch (error) {
 		res.status(400).send({ message: error.message });

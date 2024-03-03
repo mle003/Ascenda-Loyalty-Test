@@ -1,4 +1,3 @@
-// Function to read hotels data from file
 async function readHotelsData(fs, dataFilePath) {
     try {
         await fs.promises.access(__dirname + dataFilePath, fs.constants.F_OK);
@@ -14,7 +13,6 @@ async function readHotelsData(fs, dataFilePath) {
     }
 }
 
-// Function to write hotels data to file
 async function writeHotelsData(fs, dataFilePath, data) {
 	try {
 		await fs.promises.writeFile(__dirname + dataFilePath, JSON.stringify(data, null, 2));
@@ -23,7 +21,6 @@ async function writeHotelsData(fs, dataFilePath, data) {
 	}
 }
 
-// Function to merge hotels data (replace with your actual implementation)
 function mergeHotelsData (hotels, currentData) {
     for (let hotel of hotels) {
         const id = (
@@ -118,22 +115,6 @@ function mergeHotelsData (hotels, currentData) {
             
         }
 
-        // currentData[id]["images"]["site"] = (currentData[id]["images"]["site"] || {})
-        // const site_images = (
-        //     hotel.images?.site ||
-        //     []
-        // )
-        // for (let image of site_images) {
-        //     let description = (image.description || image.caption)
-        //     let url = (image.url || image.link)
-        //     if(!currentData[id]["images"]["site"][description]) {
-        //         currentData[id]["images"]["site"][description] = []
-        //     }
-        //     if(!currentData[id]["images"]["site"][description].includes(url)) {
-        //         currentData[id]["images"]["site"][description].push(url)
-        //     }
-        // }
-
         currentData[id]["images"]["amenities"] = (currentData[id]["images"]["amenities"] || {})
         const amenities_images = (
             hotel.images?.amenities ||
@@ -166,7 +147,6 @@ function mergeHotelsData (hotels, currentData) {
     return currentData
 };
 
-// Function to fetch hotels data from suppliers
 async function fetchHotelsDataFromSuppliers(axios, suppliers) {
 	const hotelPromises = suppliers.map((url) => axios.get(url));
 	const hotelData = await Promise.all(hotelPromises);
@@ -174,7 +154,6 @@ async function fetchHotelsDataFromSuppliers(axios, suppliers) {
 	return hotelData.flatMap((data) => data.data);
 }
 
-// Function to update hotels data
 async function updatedHotelsData(dataFilePath, suppliersDataFilePath, fs, axios) {
 	const currentHotelsData = await readHotelsData(fs, dataFilePath);
 	const suppliers = require(__dirname + suppliersDataFilePath);
@@ -188,12 +167,10 @@ async function updatedHotelsData(dataFilePath, suppliersDataFilePath, fs, axios)
 	return mergedData;
 }
 
-// Function to get all hotels data
 function getAllHotels(fs, dataFilePath) {
 	return readHotelsData(fs, dataFilePath);
 }
 
-// Function to get hotel by ID
 function getHotelById(hotelsData, req) {
 	const hotelId = req.query.id;
 	if (!hotelId) {
@@ -205,7 +182,6 @@ function getHotelById(hotelsData, req) {
 	return hotelsData[hotelId];
 }
 
-// Function to get hotel by destination ID
 function getHotelByDestinationId(hotelsData, req) {
 	const destinationId = req.query.id;
 	if (!destinationId) {

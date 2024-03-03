@@ -7,22 +7,20 @@ jest.mock("axios");
 
 const mockMergedHotelsDataPath = "/__mocks__/mock-merged-hotel-data.json";
 const mockSuppliersDataPath = "/__mocks__/mock-suppliers"
-const mockHotelsData = require("./__mocks__/mock-hotels-data.json"); // Define mock hotels data for testing
+const mockHotelsData = require("./__mocks__/mock-hotels-data.json");
 const mockMergedHotelsData = require("./__mocks__/mock-merged-hotel-data.json");
 
 beforeEach(() => {
-	axios.get.mockResolvedValueOnce({ data: mockHotelsData }); // Mock empty supplier data
+	axios.get.mockResolvedValueOnce({ data: mockHotelsData });
 });
 
 describe("Hotels data access functions", () => {
-	// Test for getAllHotels
 	test("getAllHotels should read hotels data from file", async () => {
 		const hotels = await getAllHotels(fs, mockMergedHotelsDataPath);
 
-		expect(hotels).toEqual(mockMergedHotelsData); // Assert based on mock data
+		expect(hotels).toEqual(mockMergedHotelsData);
 	});
 
-	// Test for getHotelById (success scenario)
 	test("getHotelById should return hotel data for valid ID", () => {
 		const hotelId = "iJhz";
 		const req = { query: { id: hotelId } };
