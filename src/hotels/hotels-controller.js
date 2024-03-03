@@ -117,29 +117,26 @@ function mergeHotelsData (hotels, currentData) {
             }
             
         }
-        // for (let image of room_images) {
-        //     currentData[id]["images"]["room"].push(image)
-        // }
 
-        currentData[id]["images"]["site"] = (currentData[id]["images"]["site"] || {})
-        const site_images = (
-            hotel.images?.site ||
-            []
-        )
-        for (let image of site_images) {
-            let description = (image.description || image.caption)
-            let url = (image.url || image.link)
-            if(!currentData[id]["images"]["site"][description]) {
-                currentData[id]["images"]["site"][description] = []
-            }
-            if(!currentData[id]["images"]["site"][description].includes(url)) {
-                currentData[id]["images"]["site"][description].push(url)
-            }
-            // currentData[id]["images"]["site"].push(image)
-        }
+        // currentData[id]["images"]["site"] = (currentData[id]["images"]["site"] || {})
+        // const site_images = (
+        //     hotel.images?.site ||
+        //     []
+        // )
+        // for (let image of site_images) {
+        //     let description = (image.description || image.caption)
+        //     let url = (image.url || image.link)
+        //     if(!currentData[id]["images"]["site"][description]) {
+        //         currentData[id]["images"]["site"][description] = []
+        //     }
+        //     if(!currentData[id]["images"]["site"][description].includes(url)) {
+        //         currentData[id]["images"]["site"][description].push(url)
+        //     }
+        // }
 
         currentData[id]["images"]["amenities"] = (currentData[id]["images"]["amenities"] || {})
         const amenities_images = (
+            hotel.images?.amenities ||
             hotel.images?.site ||
             []
         )
@@ -152,7 +149,6 @@ function mergeHotelsData (hotels, currentData) {
             if(!currentData[id]["images"]["amenities"][description].includes(url)) {
                 currentData[id]["images"]["amenities"][description].push(url)
             }
-            // currentData[id]["images"]["amenities"].push(image)
         }
 
         currentData[id]["booking_condition"] = (currentData[id]["booking_condition"] || [])
