@@ -18,4 +18,4 @@ This web server is divided into 2 different parts
 
 ## Test
 
-### `jest`
+### `npm test`
