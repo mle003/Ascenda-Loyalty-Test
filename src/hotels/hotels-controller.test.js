@@ -6,7 +6,7 @@ const { updatedHotelsData, getAllHotels, getHotelById, getHotelByDestinationId }
 jest.mock("axios");
 
 const mockMergedHotelsDataPath = "/__mocks__/mock-merged-hotel-data.json";
-const mockSuppliersDataPath = "/__mocks__/mock-suppliers"
+const mockSuppliersDataPath = "/__mocks__/mock-suppliers";
 const mockHotelsData = require("./__mocks__/mock-hotels-data.json");
 const mockMergedHotelsData = require("./__mocks__/mock-merged-hotel-data.json");
 
@@ -41,13 +41,13 @@ describe("Hotels data access functions", () => {
 		expect(() => getHotelById(mockMergedHotelsData, req)).toThrow("Hotel id is invalid");
 	});
 
-    test("getHotelByDestinationId should thorw an error if destination id is valid", () => {
-        req = { query: {id: 5432}}
-        const hotel = getHotelByDestinationId(mockMergedHotelsData, req);
-        expect(hotel).toEqual(mockMergedHotelsData["iJhz"])
-    })
+	test("getHotelByDestinationId should thorw an error if destination id is valid", () => {
+		req = { query: { id: 5432 } };
+		const hotel = getHotelByDestinationId(mockMergedHotelsData, req);
+		expect(hotel).toEqual(mockMergedHotelsData["iJhz"]);
+	});
 
-    test("getHotelByDestinationId should throw error for missing ID", () => {
+	test("getHotelByDestinationId should throw error for missing ID", () => {
 		const req = { query: {} };
 
 		expect(() => getHotelByDestinationId(mockMergedHotelsData, req)).toThrow("Missing destination Id");
@@ -59,11 +59,11 @@ describe("Hotels data access functions", () => {
 	});
 });
 
-describe('Updated hotels data function', () => {
-  test('updatedHotelsData should fetch data, merge it, write to file, and return merged data', async () => {
-
-    const updatedData = await updatedHotelsData(mockMergedHotelsDataPath, mockSuppliersDataPath, fs, axios);
-    expect(axios.get).toHaveBeenCalledWith('https://example.com/hotels');
-    expect(JSON.stringify(updatedData)).toEqual(JSON.stringify(mockMergedHotelsData)); // Assert based on mock data
-  });
+describe("Updated hotels data function", () => {
+	test("updatedHotelsData should fetch data, merge it, write to file, and return merged data", async () => {
+		const updatedData = await updatedHotelsData(mockMergedHotelsDataPath, mockSuppliersDataPath, fs, axios);
+		expect(axios.get).toHaveBeenCalledWith("https://example.com/hotels");
+		expect(JSON.stringify(updatedData)).toEqual(JSON.stringify(mockMergedHotelsData)); // Assert based on mock data
+	});
 });
+

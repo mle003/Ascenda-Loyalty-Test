@@ -46,12 +46,13 @@
           "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/4.jpg"
         ]
       },
-      "site": {
-        "Front": [
-          "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/1.jpg"
-        ]
-      },
       "amenities": {
+        "RWS": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/0.jpg"
+        ],
+        "Sentosa Gateway": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/6.jpg"
+        ],
         "Front": [
           "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/1.jpg"
         ]
@@ -108,20 +109,6 @@
         ],
         "Bathroom": [
           "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i94_m.jpg"
-        ]
-      },
-      "site": {
-        "Restaurant": [
-          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i1_m.jpg"
-        ],
-        "Hotel Exterior": [
-          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i2_m.jpg"
-        ],
-        "Entrance": [
-          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i5_m.jpg"
-        ],
-        "Bar": [
-          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i24_m.jpg"
         ]
       },
       "amenities": {
@@ -185,13 +172,9 @@
           "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i15_m.jpg"
         ]
       },
-      "site": {
-        "Bar": [
-          "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i55_m.jpg"
-        ]
-      },
       "amenities": {
         "Bar": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i57_m.jpg",
           "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i55_m.jpg"
         ]
       }
