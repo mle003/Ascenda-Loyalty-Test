@@ -56,6 +56,11 @@
         "Front": [
           "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/1.jpg"
         ]
+      },
+      "sites": {
+        "Front": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/1.jpg"
+        ]
       }
     },
     "booking_condition": [
@@ -124,6 +129,20 @@
         "Bar": [
           "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i24_m.jpg"
         ]
+      },
+      "sites": {
+        "Restaurant": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i1_m.jpg"
+        ],
+        "Hotel Exterior": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i2_m.jpg"
+        ],
+        "Entrance": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i5_m.jpg"
+        ],
+        "Bar": [
+          "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i24_m.jpg"
+        ]
       }
     },
     "booking_condition": []
@@ -175,6 +194,11 @@
       "amenities": {
         "Bar": [
           "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i57_m.jpg",
+          "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i55_m.jpg"
+        ]
+      },
+      "sites": {
+        "Bar": [
           "https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i55_m.jpg"
         ]
       }
